@@ -5,4 +5,5 @@ export const Colors = {
   background: "#F0F0F0",
   white: "white",
   lightGray: "#707070",
+  chipColor: "#E8E8E8",
 };

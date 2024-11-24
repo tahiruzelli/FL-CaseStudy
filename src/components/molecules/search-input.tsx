@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     flexDirection: "row",
     backgroundColor: Colors.white,
+    marginBottom: 16,
   },
   inputStyle: {
     backgroundColor: "transparent",

@@ -1,21 +1,25 @@
+import FileCard from "@/src/components/molecules/file-card";
 import HomeScreenChips from "@/src/components/molecules/home-screen-chips";
+import SearchInput from "@/src/components/molecules/search-input";
 import { Colors } from "@/src/utils/constans/colors";
-import dimensions from "@/src/utils/helpers/dimension";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SearchPage() {
   return (
-    <View style={styles.body}>
+    <SafeAreaView style={styles.body}>
+      <SearchInput></SearchInput>
       <HomeScreenChips></HomeScreenChips>
-    </View>
+      <FileCard isActive={true}></FileCard>
+      <FileCard isActive={false}></FileCard>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   body: {
     backgroundColor: Colors.background,
-    justifyContent: "center",
     paddingHorizontal: 16,
-    height: dimensions()._height,
+    paddingVertical: 10,
   },
 });

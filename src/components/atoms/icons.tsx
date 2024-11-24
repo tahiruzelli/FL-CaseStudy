@@ -4,8 +4,8 @@ import Svg, { Path } from "react-native-svg";
 export function SearchIcon(props: any) {
   return (
     <Svg
-      width={18}
-      height={18}
+      width={props.height ?? 18}
+      height={props.width ?? 18}
       viewBox="0 0 18 18"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -22,8 +22,8 @@ export function SearchIcon(props: any) {
 export function PersonIcon(props: any) {
   return (
     <Svg
-      width={16}
-      height={16}
+      width={props.height ?? 18}
+      height={props.width ?? 18}
       viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

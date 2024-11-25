@@ -6,6 +6,8 @@ import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FAB } from "react-native-paper";
 import dimensions from "@/src/utils/helpers/dimension";
+import { PageRoutes } from "@/src/utils/constans/page-routes";
+import { router } from "expo-router";
 
 export default function SearchPage() {
   return (
@@ -19,7 +21,7 @@ export default function SearchPage() {
         color="white"
         label="Dosya Ekle"
         style={styles.fab}
-        onPress={() => console.log("Pressed")}
+        onPress={() => router.replace(PageRoutes.fileAddOrEditScreen)}
       />
     </SafeAreaView>
   );

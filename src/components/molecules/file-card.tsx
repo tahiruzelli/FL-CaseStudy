@@ -2,7 +2,7 @@ import { Colors } from "@/src/utils/constans/colors";
 import { View, StyleSheet, Clipboard, TouchableOpacity } from "react-native";
 import AppText from "../atoms/app-text";
 import CopyButton from "../atoms/copy-button";
-import { Snackbar } from "react-native-paper";
+import { Button, Divider, Menu, Snackbar } from "react-native-paper";
 import { useState } from "react";
 import CircleView from "../atoms/circle-view";
 import { MoreVerticalIcon } from "../atoms/icons";
@@ -15,9 +15,12 @@ export default function FileCard(props: any) {
 
   const onDismissSnackBar = () => setVisible(false);
 
-  function onMenuButtonTapped() {
-    console.log("on menu tapped");
-  }
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  const openMenu = () => setMenuVisible(true);
+
+  const closeMenu = () => setMenuVisible(false);
+
   return (
     <View
       style={
@@ -27,6 +30,7 @@ export default function FileCard(props: any) {
       <Snackbar visible={visible} onDismiss={onDismissSnackBar}>
         Başarı ile kopyalandı
       </Snackbar>
+
       {/* FIRST LINE */}
       <View
         style={{
@@ -57,14 +61,29 @@ export default function FileCard(props: any) {
             {props.isActive ? "Açık" : "Kapandı"}
           </AppText>
         </View>
-        <TouchableOpacity
-          style={styles.menuButtonStyle}
-          onPress={onMenuButtonTapped}
-        >
-          <CircleView color={Colors.primary} height={24} width={24}>
-            <MoreVerticalIcon></MoreVerticalIcon>
-          </CircleView>
-        </TouchableOpacity>
+
+        <View style={styles.menuButtonStyle}>
+          <Menu
+            visible={menuVisible}
+            onDismiss={closeMenu}
+            contentStyle={{ backgroundColor: Colors.white }}
+            anchor={
+              <Button onPress={openMenu}>
+                <CircleView color={Colors.primary} height={24} width={24}>
+                  <MoreVerticalIcon></MoreVerticalIcon>
+                </CircleView>
+              </Button>
+            }
+          >
+            <Menu.Item onPress={() => {}} title="Dosya Detayına Git" />
+            <Divider />
+            <Menu.Item onPress={() => {}} title="Dosyayı Kapat" />
+            <Divider />
+            <Menu.Item onPress={() => {}} title="Tab B'ye git" />
+            <Divider />
+            <Menu.Item onPress={() => {}} title="Tab C'ye git" />
+          </Menu>
+        </View>
       </View>
 
       {/* SECOND LINE */}
@@ -166,7 +185,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   menuButtonStyle: {
-    right: 0,
+    right: -19,
     position: "absolute",
   },
 });

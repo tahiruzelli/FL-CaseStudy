@@ -5,7 +5,13 @@ import { useState } from "react";
 export default function HomeScreenChips() {
   const [index, setIndex] = useState(0);
   return (
-    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingBottom: 16,
+      }}
+    >
       <AppChip
         title={"Tümü"}
         isSelected={index == 0}

@@ -21,7 +21,7 @@ export default function SearchPage() {
         color="white"
         label="Dosya Ekle"
         style={styles.fab}
-        onPress={() => router.replace(PageRoutes.fileAddOrEditScreen)}
+        onPress={() => router.push(PageRoutes.fileAddOrEditScreen)}
       />
     </SafeAreaView>
   );

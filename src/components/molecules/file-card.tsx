@@ -23,6 +23,7 @@ export default function FileCard(props: any) {
 
   return (
     <View
+      key={props.element.mendatory_input}
       style={
         props.isActive ? styles.selectedCardStyle : styles.unSelectedCardStyle
       }
@@ -39,11 +40,13 @@ export default function FileCard(props: any) {
           width: dimensions()._width - 50,
         }}
       >
-        <AppText style={styles.titleStyle}>Mendatory Input</AppText>
+        <AppText style={styles.titleStyle}>
+          {props.element.mendatory_input}
+        </AppText>
         <CopyButton
           onTap={() => {
             onToggleSnackBar();
-            Clipboard.setString("Mendatory Input");
+            Clipboard.setString(props.element.mendatory_input);
           }}
         ></CopyButton>
         <View
@@ -95,12 +98,14 @@ export default function FileCard(props: any) {
         }}
       >
         <AppText style={styles.descriptionStyle}>
-          {"Numeric input-1"} ⚬ {"Text input-1"}
+          {props.element.numeric_input} ⚬ {props.element.text_input}
         </AppText>
         <CopyButton
           onTap={() => {
             onToggleSnackBar();
-            Clipboard.setString("Numeric input-1 ⚬ Text input-1");
+            Clipboard.setString(
+              props.element.numeric_input + props.element.text_input
+            );
           }}
         ></CopyButton>
       </View>

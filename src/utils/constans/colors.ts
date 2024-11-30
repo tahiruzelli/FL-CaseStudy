@@ -11,4 +11,5 @@ export const Colors = {
   borderColor: "#BABABA",
   green: "#22C55E",
   transparent: "transparent",
+  borderColor2: "#E7E7E7",
 };

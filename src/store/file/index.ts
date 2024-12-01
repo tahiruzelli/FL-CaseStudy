@@ -9,6 +9,7 @@ interface FileStore {
   postFileSuccess: boolean;
   fetchFiles: () => Promise<void>;
   postFile: (values: any) => Promise<void>;
+  editFile: (values: any) => Promise<void>;
 }
 
 export const useFileStore = create<FileStore>((set) => ({
@@ -29,6 +30,23 @@ export const useFileStore = create<FileStore>((set) => ({
     set({ loading: true, postFileSuccess: false });
     try {
       const response = await axios.post(`${Urls.baseUrl}${Urls.files}`, values);
+      set({
+        files: response.data.datas,
+        loading: false,
+        postFileSuccess: true,
+      });
+    } catch (error) {
+      set({
+        error: "Failed to post file",
+        loading: false,
+        postFileSuccess: false,
+      });
+    }
+  },
+  editFile: async (values: any) => {
+    set({ loading: true, postFileSuccess: false });
+    try {
+      const response = await axios.put(`${Urls.baseUrl}${Urls.files}`, values);
       set({
         files: response.data.datas,
         loading: false,

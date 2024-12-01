@@ -32,7 +32,7 @@ export default function SearchPage() {
           <View></View>
         ) : (
           files.map((element: string, index: number) => (
-            <FileCard key={index} isActive={true} element={element}></FileCard>
+            <FileCard key={index} element={element}></FileCard>
           ))
         )}
       </ScrollView>

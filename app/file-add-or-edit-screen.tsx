@@ -1,7 +1,5 @@
 import FileAddScreenAppBar from "@/src/components/molecules/file-add-screen-appbar";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { NavigationContainer } from "@react-navigation/native";
 import React, { useState } from "react";
 import FileAddTabs from "@/src/components/molecules/file-add-tabs";
 import { Colors } from "@/src/utils/constans/colors";
@@ -10,16 +8,13 @@ import AppText from "@/src/components/atoms/app-text";
 import AppButton from "@/src/components/atoms/app-button";
 import { ButtonTypes } from "@/src/utils/enums/button-types";
 import { useFileStore } from "@/src/store/file";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { PageRoutes } from "@/src/utils/constans/page-routes";
 
-export default function FileAddOrEditScreen() {
-  const Tab = createMaterialTopTabNavigator();
-
+export default function FileAddOrEditScreen(props: any) {
   const [selectedFileType, setSelectedFileType] = useState("");
-  const [test, setTest] = useState("");
 
-  const { loading, error, postFile } = useFileStore();
+  const { postFile, editFile } = useFileStore();
 
   const onToggleSnackBar = () => setVisible(!visible);
 
@@ -27,29 +22,36 @@ export default function FileAddOrEditScreen() {
 
   const [visible, setVisible] = useState(false);
 
+  const params = useLocalSearchParams();
+
   var mendatory_input = "";
   let numeric_input = "";
   let text_input = "";
-
+  const isAddScreen = params.mendatory_input === undefined;
   function BodyTest() {
+    if (!isAddScreen) {
+      mendatory_input = params.mendatory_input as string;
+      numeric_input = params.numeric_input as string;
+      text_input = params.text_input as string;
+      setSelectedFileType(params.file_type as string);
+    }
     return (
       <View>
         <View style={styles.container}>
           <TextInput
-            label={"Mendatory Input"}
+            label={mendatory_input ?? "Mendatory Input"}
             style={{
               backgroundColor: Colors.white,
             }}
             onChangeText={(value) => {
               mendatory_input = value;
             }}
-            // value={mendatory_input}
             outlineColor={Colors.borderColor2}
             activeOutlineColor={Colors.primary}
             mode="outlined"
           ></TextInput>
           <TextInput
-            label={"Text Input 1"}
+            label={text_input ?? "Text Input 1"}
             style={{
               backgroundColor: Colors.white,
             }}
@@ -61,7 +63,7 @@ export default function FileAddOrEditScreen() {
             mode="outlined"
           ></TextInput>
           <TextInput
-            label={"Numeric Input 1"}
+            label={numeric_input ?? "Numeric Input 1"}
             style={{
               backgroundColor: Colors.white,
             }}
@@ -120,7 +122,7 @@ export default function FileAddOrEditScreen() {
         </View>
         <AppButton
           type={ButtonTypes.primary}
-          title={"Dosya Ekle"}
+          title={isAddScreen ? "Dosya Ekle" : "Dosyayı Değiştir"}
           borderRadius={16}
           onTap={() => {
             console.log({
@@ -136,12 +138,21 @@ export default function FileAddOrEditScreen() {
               numeric_input != "" &&
               text_input != ""
             ) {
-              postFile({
-                mendatory_input: mendatory_input,
-                numeric_input: numeric_input,
-                text_input: text_input,
-                file_type: selectedFileType,
-              });
+              if (isAddScreen) {
+                postFile({
+                  mendatory_input: mendatory_input,
+                  numeric_input: numeric_input,
+                  text_input: text_input,
+                  file_type: selectedFileType,
+                });
+              } else {
+                editFile({
+                  mendatory_input: mendatory_input,
+                  numeric_input: numeric_input,
+                  text_input: text_input,
+                  file_type: selectedFileType,
+                });
+              }
               router.replace(PageRoutes.home);
             } else {
               onToggleSnackBar();

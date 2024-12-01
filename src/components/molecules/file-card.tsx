@@ -7,6 +7,8 @@ import { useState } from "react";
 import CircleView from "../atoms/circle-view";
 import { MoreVerticalIcon } from "../atoms/icons";
 import dimensions from "@/src/utils/helpers/dimension";
+import { router } from "expo-router";
+import { PageRoutes } from "@/src/utils/constans/page-routes";
 
 export default function FileCard(props: any) {
   const [visible, setVisible] = useState(false);
@@ -20,13 +22,12 @@ export default function FileCard(props: any) {
   const openMenu = () => setMenuVisible(true);
 
   const closeMenu = () => setMenuVisible(false);
+  const isActive = props.element.is_open;
 
   return (
     <View
       key={props.element.mendatory_input}
-      style={
-        props.isActive ? styles.selectedCardStyle : styles.unSelectedCardStyle
-      }
+      style={isActive ? styles.selectedCardStyle : styles.unSelectedCardStyle}
     >
       <Snackbar visible={visible} onDismiss={onDismissSnackBar}>
         Başarı ile kopyalandı
@@ -50,18 +51,14 @@ export default function FileCard(props: any) {
           }}
         ></CopyButton>
         <View
-          style={
-            props.isActive ? styles.activeChipStyle : styles.closedChipStyle
-          }
+          style={isActive ? styles.activeChipStyle : styles.closedChipStyle}
         >
           <AppText
             style={
-              props.isActive
-                ? styles.activeChipTextStyle
-                : styles.closedChipTextStyle
+              isActive ? styles.activeChipTextStyle : styles.closedChipTextStyle
             }
           >
-            {props.isActive ? "Açık" : "Kapandı"}
+            {isActive ? "Açık" : "Kapandı"}
           </AppText>
         </View>
 
@@ -78,7 +75,23 @@ export default function FileCard(props: any) {
               </Button>
             }
           >
-            <Menu.Item onPress={() => {}} title="Dosya Detayına Git" />
+            <Menu.Item
+              onPress={() => {
+                closeMenu();
+                const data = props.element;
+                router.push({
+                  pathname: PageRoutes.fileAddOrEditScreen,
+                  params: {
+                    file_type: data.file_type,
+                    is_open: data.is_open,
+                    mendatory_input: data.mendatory_input,
+                    numeric_input: data.numeric_input,
+                    text_input: data.text_input,
+                  },
+                });
+              }}
+              title="Dosya Detayına Git"
+            />
             <Divider />
             <Menu.Item onPress={() => {}} title="Dosyayı Kapat" />
             <Divider />

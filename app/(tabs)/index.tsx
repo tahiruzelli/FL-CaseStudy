@@ -2,7 +2,7 @@ import FileCard from "@/src/components/molecules/file-card";
 import HomeScreenChips from "@/src/components/molecules/home-screen-chips";
 import SearchInput from "@/src/components/molecules/search-input";
 import { Colors } from "@/src/utils/constans/colors";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FAB } from "react-native-paper";
 import dimensions from "@/src/utils/helpers/dimension";
@@ -12,7 +12,7 @@ import { useFileStore } from "@/src/store/file";
 import { useEffect } from "react";
 
 export default function SearchPage() {
-  const { files, loading, error, fetchFiles } = useFileStore();
+  const { files = [], loading, error, fetchFiles } = useFileStore();
   useEffect(() => {
     console.log("fetch");
     fetchFiles();
@@ -27,13 +27,15 @@ export default function SearchPage() {
       <SearchInput></SearchInput>
       <HomeScreenChips></HomeScreenChips>
 
-      {files.length == 0 ? (
-        <View></View>
-      ) : (
-        files.map((element: string, index: number) => (
-          <FileCard key={index} isActive={true} element={element}></FileCard>
-        ))
-      )}
+      <ScrollView>
+        {files.length == 0 ? (
+          <View></View>
+        ) : (
+          files.map((element: string, index: number) => (
+            <FileCard key={index} isActive={true} element={element}></FileCard>
+          ))
+        )}
+      </ScrollView>
 
       <FAB
         icon="plus"

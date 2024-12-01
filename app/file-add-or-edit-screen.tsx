@@ -1,17 +1,37 @@
 import FileAddScreenAppBar from "@/src/components/molecules/file-add-screen-appbar";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { NavigationContainer } from "@react-navigation/native";
 import React, { useState } from "react";
 import FileAddTabs from "@/src/components/molecules/file-add-tabs";
 import { Colors } from "@/src/utils/constans/colors";
-import { TextInput } from "react-native-paper";
+import { Snackbar, TextInput } from "react-native-paper";
 import AppText from "@/src/components/atoms/app-text";
 import AppButton from "@/src/components/atoms/app-button";
 import { ButtonTypes } from "@/src/utils/enums/button-types";
+import { useFileStore } from "@/src/store/file";
+import { router } from "expo-router";
+import { PageRoutes } from "@/src/utils/constans/page-routes";
 
 export default function FileAddOrEditScreen() {
+  const Tab = createMaterialTopTabNavigator();
+
   const [selectedFileType, setSelectedFileType] = useState("");
-  function body() {
+  const [test, setTest] = useState("");
+
+  const { loading, error, postFile } = useFileStore();
+
+  const onToggleSnackBar = () => setVisible(!visible);
+
+  const onDismissSnackBar = () => setVisible(false);
+
+  const [visible, setVisible] = useState(false);
+
+  var mendatory_input = "";
+  let numeric_input = "";
+  let text_input = "";
+
+  function BodyTest() {
     return (
       <View>
         <View style={styles.container}>
@@ -20,6 +40,10 @@ export default function FileAddOrEditScreen() {
             style={{
               backgroundColor: Colors.white,
             }}
+            onChangeText={(value) => {
+              mendatory_input = value;
+            }}
+            // value={mendatory_input}
             outlineColor={Colors.borderColor2}
             activeOutlineColor={Colors.primary}
             mode="outlined"
@@ -29,6 +53,9 @@ export default function FileAddOrEditScreen() {
             style={{
               backgroundColor: Colors.white,
             }}
+            onChangeText={(value) => {
+              text_input = value;
+            }}
             outlineColor={Colors.borderColor2}
             activeOutlineColor={Colors.primary}
             mode="outlined"
@@ -37,6 +64,9 @@ export default function FileAddOrEditScreen() {
             label={"Numeric Input 1"}
             style={{
               backgroundColor: Colors.white,
+            }}
+            onChangeText={(value) => {
+              numeric_input = value;
             }}
             outlineColor={Colors.borderColor2}
             activeOutlineColor={Colors.primary}
@@ -92,8 +122,30 @@ export default function FileAddOrEditScreen() {
           type={ButtonTypes.primary}
           title={"Dosya Ekle"}
           borderRadius={16}
-          onTap={function (): void {
-            throw new Error("Function not implemented.");
+          onTap={() => {
+            console.log({
+              mendatory_input: mendatory_input,
+              numeric_input: numeric_input,
+              text_input: text_input,
+              file_type: selectedFileType,
+            });
+
+            if (
+              selectedFileType != "" &&
+              mendatory_input != "" &&
+              numeric_input != "" &&
+              text_input != ""
+            ) {
+              postFile({
+                mendatory_input: mendatory_input,
+                numeric_input: numeric_input,
+                text_input: text_input,
+                file_type: selectedFileType,
+              });
+              router.replace(PageRoutes.home);
+            } else {
+              onToggleSnackBar();
+            }
           }}
         ></AppButton>
       </View>
@@ -102,7 +154,10 @@ export default function FileAddOrEditScreen() {
   return (
     <View style={{ flex: 1 }}>
       <FileAddScreenAppBar />
-      <FileAddTabs screen={body} />
+      <FileAddTabs screen={<BodyTest></BodyTest>} />
+      <Snackbar visible={visible} onDismiss={onDismissSnackBar}>
+        Gerekli tüm alanları doldurunuz
+      </Snackbar>
     </View>
   );
 }

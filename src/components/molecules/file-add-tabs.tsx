@@ -45,7 +45,7 @@ export default function FileAddTabs(props: any) {
             tabBarInactiveTintColor: Colors.lightGray,
           }}
         >
-          <Tab.Screen name="Bilgiler" component={props.screen} />
+          <Tab.Screen name="Bilgiler" component={() => props.screen} />
           <Tab.Screen name="Tab B" component={ScreenB} />
           <Tab.Screen name="Tab C" component={ScreenC} />
         </Tab.Navigator>
